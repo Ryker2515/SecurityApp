@@ -13,13 +13,22 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
+
+/* Footer start*/
+
+.footer {
+    min-height: 280px;
+    background-color: #120c68;
+    background-image: url('../footer.svg');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: white;
+    text-align: center;
 }
 
+/* Footer Ends*/
 
 /* Header Starts*/
-
 .headerRow {
     padding-left: 4rem;
     padding-right: 4rem;
