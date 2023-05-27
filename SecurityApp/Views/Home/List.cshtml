@@ -7,13 +7,114 @@
     .pageContainer {
         min-height: 550px;
     }
+
+    @@media (min-width: 1400px){
+        .container {
+            max-width: 1419px;
+        }
+    }
+
+    .listMainContainer {
+        margin: 2rem 0;
+        padding: 1.25rem;
+        background-color: #f6fafd;
+        box-shadow: inset 0 0 0 1px #cce0f5, 0 0 0 2px transparent;
+    }
+
+    .btnTest{
+        float: right;
+        margin-top: -8px;
+    }
+
+    .has-search .form-control {
+        padding-left: 2.375rem;
+    }
+
+    .has-search .form-control-feedback {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        width: 2.375rem;
+        height: 2.375rem;
+        line-height: 2.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: black;
+    }
+
+    table{
+        background-color: #fff;
+        box-shadow: inset 0 0 0 1px #d3d3d9;
+    }
+
+    th{
+        text-transform: uppercase;
+        padding: 20px 12px 12px 12px !important;
+        color: #504d80;
+        letter-spacing: 1.5px;
+        font-size: .75rem;
+        font-weight: 500;
+    }
+
+    td{
+        padding: 12px !important;
+        color: #555463;       
+    }
+
+    td a {
+        color: #4b45a1;
+    }
+
 </style>
 
 <div class="pageContainer">
-    <h1>List</h1>
-    <div>
-        <p>asdsad</p>
-        <button>yes</button>
+    <div class="listMainContainer">
+        <span class="listPageHeading">Find out if you have vulnerabilities that put you at risk</span>
+        <button class="btn btn-success btnTest">Test your applications</button>
+    </div>
+    <div class="gridContent row">
+        <div class="col-2">
+            <div class="filtersContainer">
+                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span>
+                <span>Applications</span>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="form-group has-search mb-3">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" id="myInput" class="form-control inputBox" placeholder="Search">
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">VULNERABILITY</th>
+                        <th scope="col">AFFECTS</th>
+                        <th scope="col">TYPE</th>
+                        <th scope="col">PUBLISHED</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="@Url.Action("Details", "Home")">Malicious Package</a></td>
+                        <td><a href=".">asdeefdzfzs</a></td>
+                        <td>pip</td>
+                        <td>24 Jan 2022</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">Malicious Package</a></td>
+                        <td><a href=".">asdeefdzfzs</a></td>
+                        <td>pip</td>
+                        <td>24 Jan 2022</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">Malicious Package</a></td>
+                        <td><a href=".">asdeefdzfzs</a></td>
+                        <td>pip</td>
+                        <td>24 Jan 2022</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
