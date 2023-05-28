@@ -1,4 +1,4 @@
-﻿
+﻿@model List<ManufacturerDto>
 @{
     ViewData["Title"] = "List";
 }
@@ -76,7 +76,20 @@
         <div class="col-2">
             <div class="filtersContainer">
                 <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span>
-                <span>Applications</span>
+                <span>Applications</span><br />
+
+                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
+                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
+                <p>
+                    <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa fa-chevron-right" onclick="filterToggle()"></i>
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                    </div>
+                </div>
             </div>
         </div>
         <div class="col-10">
@@ -87,31 +100,22 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">VULNERABILITY</th>
-                        <th scope="col">AFFECTS</th>
-                        <th scope="col">TYPE</th>
+                        <th scope="col">Manufacturer</th>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Version</th>
                         <th scope="col">PUBLISHED</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a href="@Url.Action("Details", "Home")">Malicious Package</a></td>
-                        <td><a href=".">asdeefdzfzs</a></td>
-                        <td>pip</td>
-                        <td>24 Jan 2022</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Malicious Package</a></td>
-                        <td><a href=".">asdeefdzfzs</a></td>
-                        <td>pip</td>
-                        <td>24 Jan 2022</td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Malicious Package</a></td>
-                        <td><a href=".">asdeefdzfzs</a></td>
-                        <td>pip</td>
-                        <td>24 Jan 2022</td>
-                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><a href="@Url.Action("Details", "Home")">@item.manufacturerName</a></td>
+                            <td><a href=".">@item.productName</a></td>
+                            <td>@item.versionNumber</td>
+                            <td>24 Jan 2022</td>
+                        </tr>
+                    }
                 </tbody>
             </table>
         </div>
