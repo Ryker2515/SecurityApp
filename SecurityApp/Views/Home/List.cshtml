@@ -65,6 +65,16 @@
         color: #4b45a1;
     }
 
+    .catFilters{
+        display:block;
+    }
+
+    .filtersContainer a {
+        font-size: 12px;
+        color: #5a626d;
+        text-decoration: none;
+    }
+
 </style>
 
 <div class="pageContainer">
@@ -75,19 +85,18 @@
     <div class="gridContent row">
         <div class="col-2">
             <div class="filtersContainer">
-                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span>
-                <span>Applications</span><br />
-
-                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
-                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
-                <p>
+                <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span>                
+                
+                <p class="mt-3">
                     <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa fa-chevron-right" onclick="filterToggle()"></i>
                     </a>
+                    <span>Applications</span>
                 </p>
                 <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
+                    <div class="card card-body catFilters">
+                        <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
+                        <input type="radio" name="filter1" value="_all" /> <span class="ml-4">All Vulnerabilities</span><br />
                     </div>
                 </div>
             </div>
@@ -100,7 +109,7 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Manufacturer</th>
+                        <th scope="col">CVEID</th>
                         <th scope="col">Product Name</th>
                         <th scope="col">Version</th>
                         <th scope="col">PUBLISHED</th>
@@ -110,10 +119,10 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td><a href="@Url.Action("Details", "Home")">@item.manufacturerName</a></td>
+                            <td><a href="@Url.Action("Details", "Home")">@item.cveId</a></td>
                             <td><a href=".">@item.productName</a></td>
                             <td>@item.versionNumber</td>
-                            <td>24 Jan 2022</td>
+                            <td>@item.published</td>
                         </tr>
                     }
                 </tbody>
