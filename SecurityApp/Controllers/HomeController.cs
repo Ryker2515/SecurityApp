@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SecurityApp.DAL;
 using SecurityApp.Models;
 using System.Diagnostics;
 using System.Text.Json;
@@ -8,12 +9,12 @@ namespace SecurityApp.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly IManufacturer _manufactureService;
 
-        public HomeController(ILogger<HomeController> logger, IHttpClientFactory httpClientFactory)
+        public HomeController(ILogger<HomeController> logger, IManufacturer manufactureService)
         {
             _logger = logger;
-            _httpClient = httpClientFactory.CreateClient();
+            _manufactureService = manufactureService;
         }
 
         public IActionResult Index()
@@ -39,34 +40,13 @@ namespace SecurityApp.Controllers
                 else _filter = id;
             }
 
-
-
-            var apiUrl = $"http://localhost:5263/api/WeatherForecast/GetManufacturersData?PageNumber={_pageNumber}" +
-                         $"&Filter={filter}&SearchText={Search}"; // Replace with your API URL
-
-            var response = await _httpClient.GetAsync(apiUrl);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                //return Ok(content);
-                var manufacturerDto1 = JsonSerializer.Deserialize<List<ManufacturerDto>>(content);
-                return View(manufacturerDto1);
-            }
-
-            //return StatusCode((int)response.StatusCode);
-
-            List<ManufacturerDto> manufacturerDto = new List<ManufacturerDto>();
-
-            return View(manufacturerDto);
+            return View(await _manufactureService.getList(_pageNumber,filter, Search));
         }
 
         public IActionResult Details()
         {
             return View();
         }
-
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

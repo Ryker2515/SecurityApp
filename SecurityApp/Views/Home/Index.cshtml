@@ -71,7 +71,8 @@
 
     </style>
 
-<div class="homePageContainer">
+<div class="container">
+    <div class="homePageContainer">
 
     <div class="row pt-5 pb-5">
         <div class="col-8">
@@ -102,6 +103,8 @@
         <input type="text" id="myInput" class="form-control inputBox" placeholder="Search">
     </div>
 </div>
+</div>
+
 
 @section Scripts {
     <script>
@@ -115,7 +118,6 @@
             function myFunction() {
                 // Code to execute when Enter is pressed
                 const searchedValue = $('#myInput').val();
-                console.log(searchedValue);
                 window.location.href = '/Home/List?Search=' + searchedValue;
             }
         });        

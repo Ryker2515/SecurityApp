@@ -1,9 +1,15 @@
+using SecurityApp.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
+builder.Services.AddMemoryCache();
+
 // Register the HttpClient
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<IManufacturer, ManufacturerService>();
 
 var app = builder.Build();
 

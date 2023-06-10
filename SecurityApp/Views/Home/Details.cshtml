@@ -3,5 +3,141 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style type="text/css">
+    
+    .detailheaderSection{
+        background-color: #f7fafd;
+        padding: 1rem 4rem;
+    }
+
+    .mainDetailSection {
+        background-color: #f7fafd;
+        padding: 1rem 4rem;
+    }
+
+    .subHeading{
+        font-size: 1.125rem;
+        line-height: 1.625rem;
+        font-weight: 400;
+        margin-top: 12px;
+        margin-bottom: 48px;
+    }
+
+    .breadcrumb_container a {
+        color: #4b45a1;
+        text-decoration: none
+    }
+
+    .breadcrumb_container{
+        background-color: #f6fafd;
+        display: grid;
+        grid-template-columns: repeat(12,[col-start] 1fr);
+        position: relative;
+        padding-top: 24px;
+        word-break: break-all;
+    }
+
+    .left{
+        grid-column: col-start/span 8;
+        grid-row: 1;
+        margin-right: 78px;
+        max-width: 800px;    
+    }
+
+    .right{
+        grid-column: col-start 9/span 4;
+        grid-row: 1;
+        position: relative;
+    }
+
+    .breadcrumb_container a:hover {
+        text-decoration: underline;
+    }
+
+    .angleRight{
+        content: "›";
+        margin: 0 8px 0 4px;
+    }
+
+    .angleIcon{
+        font-size: 12px;
+    }
+
+    .defaultScrum{
+        color: #555463;
+    }
+
+    .has-search .form-control {
+        padding-left: 2.375rem;
+    }
+
+    .has-search .form-control-feedback {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        width: 2.375rem;
+        height: 2.375rem;
+        line-height: 2.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: black;
+    }
+
+    ._detailsPageClass hr{
+        opacity: unset;
+        background-color: #d3d3d9;
+        border: none;
+        display: block;
+        height: 1px;
+        border-bottom: 3px solid #cc4f19;
+        margin: unset;
+    }
+
+    .info-block{
+        font-size: 0.875rem;
+        display: inline-block;
+        font-weight: 500;
+        margin-right: 12px;
+    }
+
+    @@media (min-width: 1400px) {
+        .container {
+            max-width: 100%;
+        }
+    }
+
+</style>
+
+
+<div class="_detailsPageClass">
+    <div class="detailheaderSection">
+        <div class="breadcrumb_container pb-3">
+            <div class="left">
+                <a href="#">Snyk Vulnerability Database</a>
+                <i class="fa fa-angle-right angleIcon" aria-hidden="true"></i>
+                <a href="#">Unmanaged (C/C++)</a>
+                <i class="fa fa-angle-right angleIcon" aria-hidden="true"></i>
+                <span class="defaultScrum">lloyd/yajl</span>
+            </div>
+            <div class="right">
+                <div class="form-group has-search">
+                    <span class="fa fa-search form-control-feedback"></span>
+                    <input type="text" id="myInput" class="form-control inputBox" placeholder="Search">
+                </div>
+            </div>
+            
+        </div>
+        <div class="pt-4 pb-3">
+            <h2>Denial of Service (DoS)</h2>
+            <span class="subHeading">Affecting lloyd/yajl package, versions [0,]</span>
+        </div>        
+    </div>
+    <hr>
+    <div class="mainDetailSection pt-4">
+        <span class="info-block">INTRODUCED: 7 JUN 2023</span>
+        <span class="badge badge-pill badge-primary">New</span>
+    </div>
+</div>
+
+
 
