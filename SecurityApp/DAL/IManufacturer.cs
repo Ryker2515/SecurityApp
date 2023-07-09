@@ -4,6 +4,6 @@ namespace SecurityApp.DAL
 {
     public interface IManufacturer
     {
-        Task<List<ManufacturerDto>> getList(int pageNumber, string filter, string search);
+        Task<ManufacturerListView> getList(int pageNumber, int id, string search);
     }
 }

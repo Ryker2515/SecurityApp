@@ -15,9 +15,9 @@ namespace SecurityApp.DAL
         {
             _memoryCache = memoryCache;
         }
-        public async Task<List<ManufacturerDto>> getList(int pageNumber, string filter, string search)
+        public async Task<ManufacturerListView> getList(int pageNumber, int id, string search)
         {
-            List<ManufacturerDto> manufacturerDto = new List<ManufacturerDto>();
+            ManufacturerListView manufacturerList = new ManufacturerListView();
 
             try
             {
@@ -31,15 +31,20 @@ namespace SecurityApp.DAL
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
                 var apiUrl = $"http://localhost:5263/api/WeatherForecast/GetManufacturersData?PageNumber={pageNumber}" +
-                        $"&Filter={filter}&SearchText={search}"; // Replace with your API URL
+                        $"&Id={id}&SearchText={search}"; // Replace with your API URL
 
                 var response = await client.GetAsync(apiUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var manufacturerDto1 = JsonSerializer.Deserialize<List<ManufacturerDto>>(content);
-                    return manufacturerDto1 ?? manufacturerDto;
+                    manufacturerList = JsonSerializer.Deserialize<ManufacturerListView>(content);
+                    int tempCount = pageNumber * 20;
+                    if(tempCount < manufacturerList.countList) 
+                        manufacturerList.isNextPage = true;
+                    manufacturerList.nextPageNumber = pageNumber + 1;
+                    manufacturerList.filterId = id;
+                    return manufacturerList;
                 }
             }
             catch (Exception ex)
@@ -47,7 +52,7 @@ namespace SecurityApp.DAL
                 throw new Exception("Error occur while getting getList data");
             }
 
-            return manufacturerDto;
+            return manufacturerList;
         }
         private async Task<string> getToken()
         {

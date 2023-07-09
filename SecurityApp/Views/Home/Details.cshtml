@@ -10,8 +10,14 @@
         padding: 1rem 4rem;
     }
 
+    .howToFixLabel{
+        font-size: .9375rem;
+        line-height: 1.5rem;
+        font-weight: 500;
+        color: #1c1c21;
+    }
+
     .mainDetailSection {
-        background-color: #f7fafd;
         padding: 1rem 4rem;
     }
 
@@ -23,7 +29,7 @@
         margin-bottom: 48px;
     }
 
-    .breadcrumb_container a {
+    ._detailsPageClass a {
         color: #4b45a1;
         text-decoration: none
     }
@@ -50,7 +56,7 @@
         position: relative;
     }
 
-    .breadcrumb_container a:hover {
+    ._detailsPageClass a:hover {
         text-decoration: underline;
     }
 
@@ -100,6 +106,41 @@
         margin-right: 12px;
     }
 
+    .badgePill{
+        background-color: #edecf6 !important;
+        color: #4b45a1;
+        font-size: .6875rem;
+        padding: 4px 8px;
+        margin-right: 12px;
+        border: 1px solid #938fc7;
+        line-height: 1;
+        font-weight: 400;
+    }
+
+    .material-design-icon__svg {
+        height: 1rem;
+        width: 1rem;
+        color: #938fc7;
+    }
+
+    .smallLink{
+        font-size: 0.875rem;
+    }
+
+    .howToFixSection{
+        padding: 1.6rem;
+        background-color: #f6fafd;
+        box-shadow: inset 0 0 0 1px #cce0f5, 0 0 0 2px transparent;
+    }
+
+    .eachRow{
+        padding-bottom: 2rem;
+    }
+
+    .mainDetailSection p {
+        color: #555463;
+    }
+
     @@media (min-width: 1400px) {
         .container {
             max-width: 100%;
@@ -134,10 +175,84 @@
     </div>
     <hr>
     <div class="mainDetailSection pt-4">
-        <span class="info-block">INTRODUCED: 7 JUN 2023</span>
-        <span class="badge badge-pill badge-primary">New</span>
+        <div class="left">
+            <div class="eachRow">
+                <span class="info-block">INTRODUCED: 7 JUN 2023</span>
+                <span class="badge rounded-pill bg-primary badgePill">New</span>
+                <a href="#" class="smallLink">CVE-2023-33460</a>
+                <span>
+                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1 
+                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                        </path>
+                    </svg>
+                </span>
+            </div>
+            <div class="howToFixSection mb-4">
+                <div class="pb-2"><span class="howToFixLabel">How to fix?</span></div>
+                <span class="defaultScrum">There is no fixed version for lloyd/yajl.</span>
+            </div>
+            <div class="pb-2"><span class="howToFixLabel">Overview</span></div>
+            <div class="overViewDesc pb-3">
+                <p>Affected versions of this package are vulnerable to Denial of Service (DoS) via the yajl_tree_parse function.</p>
+            </div>
+            <div class="pb-2"><span class="howToFixLabel">Details</span></div>
+            <p>
+                Denial of Service (DoS) describes a family of attacks, all aimed at making a system inaccessible to its intended and legitimate users.
+            </p>
+
+            <p>
+                Unlike other vulnerabilities, DoS attacks usually do not aim at breaching security. Rather, 
+                they are focused on making websites and services unavailable to genuine users resulting in downtime.
+            </p>
+
+            <p>
+                One popular Denial of Service vulnerability is DDoS (a Distributed Denial of Service), an attack that attempts
+                to clog network pipes to the system by generating a large volume of traffic from many machines.
+            </p>
+
+            <p>
+                When it comes to open source libraries, DoS vulnerabilities allow attackers to trigger such a crash or crippling
+                of the service by using a flaw either in the application code or from the use of open source libraries.
+            </p>
+
+            <p>    Two common types of DoS vulnerabilities: </p>
+            <ul>
+                <li>
+                    <p>High CPU/Memory Consumption- An attacker sending crafted requests that could cause the system to take a disproportionate amount of time to process. For example, <a href="SNYK-JAVA-COMMONSFILEUPLOAD-30082">commons-fileupload:commons-fileupload</a>.</p>
+                </li>
+                <li>
+                    <p>Crash - An attacker sending crafted requests that could cause the system to crash. For Example,  <a href="https://snyk.io/vuln/npm:ws:20171108">npm <code>ws</code> package</a></p>
+                </li>
+            </ul>
+
+            <div class="pb-2"><span class="howToFixLabel">References</span></div>
+            <ul>
+                <li><a href="https://github.com/lloyd/yajl/issues/250">GitHub Issue</a></li>
+            </ul>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#myInput').keypress(function (event) {
+                if (event.keyCode === 13) {
+                    myFunction();
+                }
+            });
+
+            function myFunction() {
+                // Code to execute when Enter is pressed
+                const searchedValue = $('#myInput').val();
+                window.location.href = '/Home/List?Search=' + searchedValue;
+            }
+        });
+
+    </script>
+}
 
 
 

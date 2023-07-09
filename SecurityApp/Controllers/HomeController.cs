@@ -27,20 +27,10 @@ namespace SecurityApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> List(string id = "",string filter = "",[FromQuery] string Search = "")
+        public async Task<IActionResult> List(int id = -1,string filter = "",[FromQuery] string Search = "", [FromQuery] int PageNumber = 1)
         {
-            int _pageNumber = 1;
-            string _filter = "";
-
-            bool isId = false;
-            if (!string.IsNullOrEmpty(id)) 
-            {
-                isId = int.TryParse(id, out int result);
-                if (isId) {_pageNumber = result; _filter = filter;}
-                else _filter = id;
-            }
-
-            return View(await _manufactureService.getList(_pageNumber,filter, Search));
+            var resultData = await _manufactureService.getList(PageNumber, id, Search);
+            return View(resultData);
         }
 
         public IActionResult Details()
