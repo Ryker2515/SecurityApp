@@ -54,6 +54,40 @@ namespace SecurityApp.DAL
 
             return manufacturerList;
         }
+        public async Task<ManufacturerDetailsView> getManufacturersDetails(int CdbId, int ManufacturerId)
+        {
+            ManufacturerDetailsView manufacturerDetails = new ManufacturerDetailsView();
+
+            try
+            {
+                string token = _memoryCache.Get<string>("AuthToken") ?? "";
+                if (string.IsNullOrEmpty(token))
+                {
+                    token = await getToken();
+                    _memoryCache.Set("AuthToken", token, TimeSpan.FromMinutes(18)); // Set the token in the cache for 30 minutes
+                }
+
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var apiUrl = $"http://localhost:5263/api/WeatherForecast/GetManufacturersDetails?CdbId={CdbId}" +
+                        $"&ManufacturerId={ManufacturerId}";
+
+                var response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    manufacturerDetails = JsonSerializer.Deserialize<ManufacturerDetailsView>(content);
+                    return manufacturerDetails;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error occur while getting details data");
+            }
+
+            return manufacturerDetails;
+        }
         private async Task<string> getToken()
         {
             try

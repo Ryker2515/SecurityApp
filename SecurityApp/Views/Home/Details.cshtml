@@ -1,9 +1,40 @@
-﻿
+﻿@model ManufacturerDetailsView
 @{
     ViewData["Title"] = "Details";
 }
 
 <style type="text/css">
+
+    .custom-donut{
+        position: absolute;
+    }
+
+    .donut-container{
+        width: 159px;
+        height: 159px;
+        z-index: 1;
+        position: relative;
+        margin: 0 auto;
+        top: -160px;
+    }
+
+    .high-custom{
+        background-color: white !important;
+        color: #cc4f19;
+        border: 1px solid #cc4f19;
+    }
+
+    .high-custom-color{
+        color: #cc4f19;
+    }
+
+    .confident-custom-Label{
+        font-size: .6875rem;
+        padding: 4px 8px;
+        margin-right: 12px;
+        line-height: 1;
+        font-weight: 400;
+    }
     
     .detailheaderSection{
         background-color: #f7fafd;
@@ -18,7 +49,12 @@
     }
 
     .mainDetailSection {
-        padding: 1rem 4rem;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+        display: flex;
+        flex-direction: row-reverse;
     }
 
     .subHeading{
@@ -34,27 +70,25 @@
         text-decoration: none
     }
 
-    .breadcrumb_container{
+    /*.breadcrumb_container{
         background-color: #f6fafd;
         display: grid;
         grid-template-columns: repeat(12,[col-start] 1fr);
         position: relative;
         padding-top: 24px;
         word-break: break-all;
-    }
+    }*/
 
-    .left{
+    /*.left{
         grid-column: col-start/span 8;
         grid-row: 1;
-        margin-right: 78px;
-        max-width: 800px;    
     }
 
     .right{
         grid-column: col-start 9/span 4;
         grid-row: 1;
         position: relative;
-    }
+    }*/
 
     ._detailsPageClass a:hover {
         text-decoration: underline;
@@ -95,7 +129,7 @@
         border: none;
         display: block;
         height: 1px;
-        border-bottom: 3px solid #cc4f19;
+        border-bottom: 3px solid #ad1a1a;
         margin: unset;
     }
 
@@ -133,6 +167,17 @@
         box-shadow: inset 0 0 0 1px #cce0f5, 0 0 0 2px transparent;
     }
 
+    .cve-class{
+        background-color: #fff;
+        box-shadow: inset 0 0 0 1px #d3d3d9;
+        padding: 72px 2rem 2rem 2rem;
+    }
+
+    .cve-class h3 {
+        font-size: 1.125rem;
+        line-height: 1.625rem;
+    }
+
     .eachRow{
         padding-bottom: 2rem;
     }
@@ -141,9 +186,36 @@
         color: #555463;
     }
 
+    .margin-bottom-one-rem{
+        margin-bottom: 1rem;
+    }
+
+    .cve-items{
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem 0px;
+    }
+
+    .cve-itemName{
+        font-size: 0.9375rem;
+        font-family: sans-serif;
+        color: rgb(85, 84, 99);
+    }
+
+    strong{
+        font-weight: 500;
+    }
+
     @@media (min-width: 1400px) {
         .container {
             max-width: 100%;
+        }
+    }
+
+    @@media (min-width: 770px){
+        .cve-class{
+            position: relative;
+            top: -55px;
         }
     }
 
@@ -152,15 +224,15 @@
 
 <div class="_detailsPageClass">
     <div class="detailheaderSection">
-        <div class="breadcrumb_container pb-3">
-            <div class="left">
+        <div class="breadcrumb_container row pb-3">
+            <div class="left col-md-8">
                 <a href="#">Snyk Vulnerability Database</a>
                 <i class="fa fa-angle-right angleIcon" aria-hidden="true"></i>
-                <a href="#">Unmanaged (C/C++)</a>
+                <a href="@Url.Action("List", "Home", new {id = Model.manufacturerDetails.manufacturerId})">@Model.manufacturerDetails.manufacturerName</a>
                 <i class="fa fa-angle-right angleIcon" aria-hidden="true"></i>
-                <span class="defaultScrum">lloyd/yajl</span>
+                <span class="defaultScrum">@Model.manufacturerDetails.productName</span>
             </div>
-            <div class="right">
+            <div class="right col-md-4">
                 <div class="form-group has-search">
                     <span class="fa fa-search form-control-feedback"></span>
                     <input type="text" id="myInput" class="form-control inputBox" placeholder="Search">
@@ -170,16 +242,176 @@
         </div>
         <div class="pt-4 pb-3">
             <h2>Denial of Service (DoS)</h2>
-            <span class="subHeading">Affecting lloyd/yajl package, versions [0,]</span>
+            <span class="subHeading">Affecting @Model.manufacturerDetails.productName package, @Model.manufacturerDetails.versionNumber</span>
         </div>        
     </div>
     <hr>
-    <div class="mainDetailSection pt-4">
-        <div class="left">
+    <div class="mainDetailSection row pt-4">
+        <div class="custom-donut col-md-4">
+            <div class="donut-container">
+                <canvas id="donutChart"></canvas>
+            </div>
+        </div>
+        <div class="right col-md-4">
+            <div class="cve-class">
+                <div class="pt-1">
+                    <h3 class="margin-bottom-one-rem"> Snyk CVSS </h3>
+                    <div class="cve-items">
+                        <span class="cve-itemName">Attack Complexity</span>
+                        <span class="cve-itemValue">
+                            <strong>Low</strong>
+                            <span>
+                                <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="cve-items">
+                        <span class="cve-itemName">Confidentiality</span>
+                        <span class="cve-itemValue">
+                            <span class="badge rounded-pill bg-primary high-custom high-custom-color confident-custom-Label">High</span>
+                            <span>
+                                <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                    <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                        1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                        4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                    </path>
+                                </svg>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="collapse" id="collapseExample">
+                        <div class="cve-items">
+                            <span class="cve-itemName">Attack Complexity</span>
+                            <span class="cve-itemValue">
+                                <strong>Low</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Confidentiality</span>
+                            <span class="cve-itemValue">
+                                <strong>High</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Attack Vector</span>
+                            <span class="cve-itemValue">
+                                <strong>Low</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Privileges Required</span>
+                            <span class="cve-itemValue">
+                                <strong>None</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">User Interaction</span>
+                            <span class="cve-itemValue">
+                                <strong>Low</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Scope</span>
+                            <span class="cve-itemValue">
+                                <strong>None</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Integrity</span>
+                            <span class="cve-itemValue">
+                                <strong>None</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                        <div class="cve-items">
+                            <span class="cve-itemName">Availability</span>
+                            <span class="cve-itemValue">
+                                <strong>None</strong>
+                                <span>
+                                    <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
+                                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1
+                                            1.17-2.83l1.24-1.26c.4-.33.6-.83.6-1.4a2 2 0 0 0-2-2 2 2 0 0 0-2 2H8c0-2.2 1.8-4 4-4s4 1.8
+                                            4 4c0 .9-.36 1.7-.93 2.27v-.03z">
+                                        </path>
+                                    </svg>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                    <p class="ml-3 mt-3">
+                        <a data-bs-toggle="collapse" href="#collapseExample" role="button"
+                           onclick="filterToggle()" aria-expanded="false" aria-controls="collapseExample">
+                            See More
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="left col-md-8">
             <div class="eachRow">
-                <span class="info-block">INTRODUCED: 7 JUN 2023</span>
+                <span class="info-block">INTRODUCED: @Model.manufacturerDetails.published</span>
                 <span class="badge rounded-pill bg-primary badgePill">New</span>
-                <a href="#" class="smallLink">CVE-2023-33460</a>
+                <a href="#" class="smallLink">@Model.manufacturerDetails.cveId</a>
                 <span>
                     <svg fill="currentColor" width="24" height="24" viewBox="0 0 24 24" class="material-design-icon__svg">
                         <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92A3.4 3.4 0 0 0 13 15h-2v-.5c0-1.1.45-2.1 
@@ -191,13 +423,13 @@
             </div>
             <div class="howToFixSection mb-4">
                 <div class="pb-2"><span class="howToFixLabel">How to fix?</span></div>
-                <span class="defaultScrum">There is no fixed version for lloyd/yajl.</span>
+                <span class="defaultScrum">There is no fixed version for @Model.manufacturerDetails.productName.</span>
             </div>
             <div class="pb-2"><span class="howToFixLabel">Overview</span></div>
             <div class="overViewDesc pb-3">
-                <p>Affected versions of this package are vulnerable to Denial of Service (DoS) via the yajl_tree_parse function.</p>
+                <p>@Model.manufacturerDetails.value</p>
             </div>
-            <div class="pb-2"><span class="howToFixLabel">Details</span></div>
+           @* <div class="pb-2"><span class="howToFixLabel">Details</span></div>
             <p>
                 Denial of Service (DoS) describes a family of attacks, all aimed at making a system inaccessible to its intended and legitimate users.
             </p>
@@ -225,19 +457,22 @@
                 <li>
                     <p>Crash - An attacker sending crafted requests that could cause the system to crash. For Example,  <a href="https://snyk.io/vuln/npm:ws:20171108">npm <code>ws</code> package</a></p>
                 </li>
-            </ul>
+            </ul>*@
 
             <div class="pb-2"><span class="howToFixLabel">References</span></div>
             <ul>
                 <li><a href="https://github.com/lloyd/yajl/issues/250">GitHub Issue</a></li>
             </ul>
         </div>
+        
     </div>
 </div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
+            InitDonutChart();
+
             $('#myInput').keypress(function (event) {
                 if (event.keyCode === 13) {
                     myFunction();
@@ -250,6 +485,51 @@
                 window.location.href = '/Home/List?Search=' + searchedValue;
             }
         });
+
+        function InitDonutChart(){
+            var ctx = document.getElementById('donutChart').getContext('2d');
+            var percentValue = 7.5; // Replace this value with your actual percentage
+
+            var donutChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [10 - percentValue, percentValue],
+                        backgroundColor: [                            
+                            'rgba(255, 255, 255, 0.0)', // Color for the unfilled portion (transparent)
+                            '#ad1a1a' // Color for the filled portion
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: 59, // Adjust this value to control the size of the donut
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: {
+                        animateRotate: true // Disable rotation animation
+                    }
+                }
+            });
+
+            // Display the percentage value in the center of the donut chart
+            donutChart.canvas.parentNode.style.position = 'relative';
+            var percentageDiv = document.createElement('div');
+            percentageDiv.innerHTML = percentValue.toFixed(1);
+            percentageDiv.style.position = 'absolute';
+            percentageDiv.style.top = '50%';
+            percentageDiv.style.left = '50%';
+            percentageDiv.style.transform = 'translate(-50%, -50%)';
+            percentageDiv.style.fontSize = '45px';
+            percentageDiv.style.fontWeight = '700';
+            percentageDiv.style.color = '#ad1a1a';
+            donutChart.canvas.parentNode.appendChild(percentageDiv);
+
+        }
 
     </script>
 }

@@ -33,9 +33,10 @@ namespace SecurityApp.Controllers
             return View(resultData);
         }
 
-        public IActionResult Details()
+        public async  Task<IActionResult> Details(int cbdId, int manufacturerId)
         {
-            return View();
+            var resultData = await _manufactureService.getManufacturersDetails(cbdId, manufacturerId);
+            return View(resultData);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -161,8 +161,8 @@
                     @foreach (var item in Model.manufacturerData)
                     {
                         <tr>
-                            <td><a href="@Url.Action("Details", "Home")">@item.cveId</a></td>
-                            <td><a href=".">@item.productName</a></td>
+                                    <td><a href="@Url.Action("Details", "Home", new {cbdId = @item.id, manufacturerId= @item.manufacturerId})">@item.cveId</a></td>
+                            <td>@item.productName</td>
                             <td>@item.versionNumber</td>
                             <td>@item.published</td>
                         </tr>
