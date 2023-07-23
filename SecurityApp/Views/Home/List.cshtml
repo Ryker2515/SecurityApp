@@ -161,10 +161,24 @@
                     @foreach (var item in Model.manufacturerData)
                     {
                         <tr>
-                                    <td><a href="@Url.Action("Details", "Home", new {cbdId = @item.id, manufacturerId= @item.manufacturerId})">@item.cveId</a></td>
+                            <td>
+                                
+                                @if (item.baseSeverity == "HIGH")
+                                {
+                                     <span class="high-custom-highlighter custom-highlighter">H</span>
+                                }
+                                else if (item.baseSeverity == "MEDIUM")
+                                {
+                                    <span class="medium-custom-highlighter custom-highlighter">M</span>
+                                }
+                                else if (item.baseSeverity == "LOW")
+                                {
+                                    <span class="low-custom-highlighter custom-highlighter">L</span>
+                                }
+                                <a href="@Url.Action("Details", "Home", new {cbdId = @item.id, manufacturerId= @item.manufacturerId})">@item.cveId</a></td>
                             <td>@item.productName</td>
                             <td>@item.versionNumber</td>
-                            <td>@item.published</td>
+                            <td>@item.published.ToString("dd MMM yyyy").ToUpper()</td>
                         </tr>
                     }
                 }
